@@ -1,0 +1,21 @@
+
+#balance.jumbotron {
+  margin-top: 1em;
+}
+
+#balance {
+  text-align: center;
+}
+
+.centered {
+  text-align: center;
+}
+
+.trans-amt {
+  float: right;
+  font-size: 15px;
+}
+
+.active {
+  font-weight: bold;
+}
