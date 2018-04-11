@@ -20,23 +20,77 @@
     <div class="container">
 
       <div id="page-send">
+        <form class="text-center">
+
+            <h2>Send</h2>
+
+            <div class="form-group">
+              <label for="inputSendEmail">Email address</label>
+              <input type="email" class="form-control" id="inputSendEmail" aria-describedby="sendhelp" placeholder="Enter email">
+            </div>
+
+            <div class="form-group">
+              <label for="inputSendName">Name</label>
+              <input type="text" class="form-control" id="inputSendName" aria-describedby="namehelp" placeholder="Enter Name">
+            </div>
+
+            <div class="form-group">
+              <label for="inputMessage">Message</label>
+              <textarea class="form-control" id="inputMessage" rows="3"></textarea>
+            </div>
+
+            <div class="form-group has-success">
+              <label class="form-control-label" for="inputSuccess1">Amount</label>
+              <input type="number" value="0" class="form-control is-valid" id="inputValid">
+              <div class="valid-feedback">Success! You've done it.</div>
+            </div>
+
+            <button id="sendMoneyBtn" href="#" class="btn btn-success">Send</button>
+
+        </form>
       </div>
 
       <div id="page-balance">
 
         <div id="balance" class="jumbotron jumbotron-fluid">
-          <h1 class="display-4" id="cur-balance">0.00 RC</h1>
+          <h1 class="display-4" id="cur-balance">--.--- RC</h1>
         </div>
 
-        <ul class="list-group">
-          <li class="list-group-item">Pizza Order <span class="trans-amt badge badge-danger">-19.99</span></li>
-          <li class="list-group-item">Paycheck <span class="trans-amt badge badge-success">+200.00</span></li>
-          <li class="list-group-item">Video Games <span class="trans-amt badge badge-danger">-10.00</span></li>
+        <ul class="list-group" id="transaction-list">
+          <li class="list-group-item">No Transactions <span class="trans-amt badge badge-primary">--.--</span></li>
         </ul>
 
       </div>
 
       <div id="page-request">
+        <form class="text-center">
+
+            <h2>Request</h2>
+
+            <div class="form-group">
+              <label for="inputSendEmail">Email address</label>
+              <input type="email" class="form-control" id="inputSendEmail" aria-describedby="sendhelp" placeholder="Enter email">
+            </div>
+
+            <div class="form-group">
+              <label for="inputSendName">Name</label>
+              <input type="text" class="form-control" id="inputSendName" aria-describedby="namehelp" placeholder="Enter Name">
+            </div>
+
+            <div class="form-group">
+              <label for="inputMessage">Message</label>
+              <textarea class="form-control" id="inputMessage" rows="3"></textarea>
+            </div>
+
+            <div class="form-group has-success">
+              <label class="form-control-label" for="inputSuccess1">Amount</label>
+              <input type="number" value="0" class="form-control is-valid" id="inputValid">
+              <div class="valid-feedback">Success! You've done it.</div>
+            </div>
+
+            <button id="sendMoneyBtn" href="#" class="btn btn-success">Request</button>
+
+        </form>
       </div>
 
       <nav class="navbar fixed-bottom navbar-dark bg-primary">

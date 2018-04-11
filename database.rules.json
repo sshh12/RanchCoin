@@ -5,6 +5,14 @@
         ".read": "$uid === auth.uid",
         ".write": "$uid === auth.uid"
       }
+    },
+    "transactions": {
+      "$transID": {
+        ".indexOn": ["timestamp"],
+        ".write": "!data.exists() && auth.uid === newData.child('sender').val()",
+        ".read": "auth.uid === data.child('sender').val() || auth.uid === data.child('receiver').val()",
+        ".validate": "newData.child('amount').isNumber() && newData.child('amount').val() > 0 && auth.uid != data.child('receiver').val()"
+      }
     }
   }
 }
