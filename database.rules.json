@@ -1,9 +1,10 @@
 {
   "rules": {
     "users": {
+      ".read": "auth != null",
       "$uid": {
-        ".read": "$uid === auth.uid",
-        ".write": "$uid === auth.uid"
+        ".write": "$uid === auth.uid",
+        ".validate": "!newData.child('balance').exists() || (!data.child('balance').exists() && newData.child('balance').val() === 0)"
       }
     },
     "transactions": {

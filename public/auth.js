@@ -44,8 +44,15 @@ class Auth {
       auth.uid = auth.user.uid;
 
       db.ref(`users/${auth.uid}`).update({
-        name: auth.user.displayName
+        name: auth.user.displayName.toLowerCase(),
+        firstname: auth.user.displayName.toLowerCase().split(" ")[0],
+        email: auth.user.email.toLowerCase(),
+        photoURL: auth.user.photoURL,
       });
+
+      db.ref(`users/${auth.uid}`).update({
+        balance: 0.00
+      }).catch(() => {});
 
       postAuthInit();
 

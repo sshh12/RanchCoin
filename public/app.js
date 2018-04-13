@@ -2,6 +2,19 @@ let db = firebase.database();
 
 $(document).ready(function() {
 
+  makeTabs();
+  makeBtns();
+
+  window.auth = new Auth();
+
+});
+
+function postAuthInit() {
+  window.account = new Account();
+}
+
+function makeTabs() {
+
   $('#page-send').hide();
   $('#page-request').hide();
 
@@ -23,10 +36,34 @@ $(document).ready(function() {
     $('#page-request').show(); $('#btn-request').addClass('active');
   });
 
-  window.auth = new Auth();
+}
 
-});
+function makeBtns() {
 
-function postAuthInit() {
-  window.account = new Account();
+  $('#inputSendNameEmail').on('change', () => {
+
+    let query = $('#inputSendNameEmail').val();
+
+    if(query.includes('@')) {
+
+      db.ref('users').orderByChild('email').equalTo(query).once('value').then((data) => {
+        console.log(data.val());
+      });
+
+    } else if(query.includes(" ")) {
+
+      db.ref('users').orderByChild('name').equalTo(query).once('value').then((data) => {
+        console.log(data.val());
+      });
+
+    } else {
+
+      db.ref('users').orderByChild('firstname').equalTo(query).once('value').then((data) => {
+        console.log(data.val());
+      });
+
+    }
+
+  });
+
 }
