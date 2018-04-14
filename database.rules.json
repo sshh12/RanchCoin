@@ -3,8 +3,13 @@
     "users": {
       ".read": "auth != null",
       "$uid": {
-        ".write": "$uid === auth.uid",
-        ".validate": "!newData.child('balance').exists() || (!data.child('balance').exists() && newData.child('balance').val() === 0)"
+        ".write": "$uid === auth.uid"
+      }
+    },
+    "accounts": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": false
       }
     },
     "transactions": {

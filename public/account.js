@@ -3,32 +3,37 @@ class Account {
 
   constructor() {
 
-    let balanceRef = db.ref(`users/${auth.uid}/balance`);
-    balanceRef.on('value', function(bal) {
-      $('#cur-balance').html(bal.val().toFixed(2) + ' RC');
-    });
+    let balanceRef = db.ref(`accounts/${auth.uid}/balance`);
+    balanceRef.on('value', this.onBalance);
 
-    let transactionRef = db.ref(`users/${auth.uid}/transactions`);
-    transactionRef.on('value', function(data) {
+    let transactionRef = db.ref(`accounts/${auth.uid}/transactions`);
+    transactionRef.on('value', this.onTransactions);
 
-      let transactions = data.val();
+  }
 
-      if(transactions !== null) {
-        $('#transaction-list').html("");
-      }
+  onBalance(data) {
+    let balance = data.val() || 0.00;
+    $('#cur-balance').html(balance.toFixed(2) + ' RC');
+  }
 
-      for(let key in transactions) {
-        db.ref(`transactions/${key}`).on('value', function(d) {
-          let transData = d.val();
-          if(transData.sender === auth.uid) {
-            $('#transaction-list').append(`<li class="list-group-item">Purchase <span class="trans-amt badge badge-danger">-${transData.amount}</span></li>`);
-          } else {
-            $('#transaction-list').append(`<li class="list-group-item">Payment <span class="trans-amt badge badge-success">+${transData.amount}</span></li>`);
-          }
-        });
-      }
+  onTransactions(data) {
 
-    });
+    let transactions = data.val();
+
+    if(transactions !== null) {
+      $('#transaction-list').html("");
+    }
+
+    for(let key in transactions) {
+      db.ref(`transactions/${key}`).on('value', function(d) {
+        let transData = d.val();
+        if(transData.sender === auth.uid) {
+          $('#transaction-list').append(`<li class="list-group-item">Purchase <span class="trans-amt badge badge-danger">-${transData.amount}</span></li>`);
+        } else {
+          $('#transaction-list').append(`<li class="list-group-item">Payment <span class="trans-amt badge badge-success">+${transData.amount}</span></li>`);
+        }
+      });
+    }
 
   }
 

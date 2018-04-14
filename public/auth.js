@@ -50,10 +50,6 @@ class Auth {
         photoURL: auth.user.photoURL,
       });
 
-      db.ref(`users/${auth.uid}`).update({
-        balance: 0.00
-      }).catch(() => {});
-
       postAuthInit();
 
     }

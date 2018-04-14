@@ -8,26 +8,43 @@ exports.handleTransaction = functions.database.ref('/transactions/{transID}').on
   let data = transaction.val();
   let key = transaction.key;
 
-  admin.database().ref('users/' + data.sender).transaction(function(user) {
+  admin.database().ref('accounts/' + data.sender).transaction(function(user) {
+
     if (user) {
+
       user.balance -= data.amount;
       if(!user.transactions) {
         user.transactions = {};
       }
       user.transactions[key] = data.timestamp;
+
     }
     return user;
+
   });
 
-  admin.database().ref('users/' + data.receiver).transaction(function(user) {
+  admin.database().ref('accounts/' + data.receiver).transaction(function(user) {
+
     if (user) {
+
       user.balance += data.amount;
+
       if(!user.transactions) {
         user.transactions = {};
       }
       user.transactions[key] = data.timestamp;
+
+    } else {
+
+      user = {
+        balance: data.amount,
+        transactions: {}
+      }
+      user.transactions[key] = data.timestamp;
+
     }
     return user;
+
   });
 
   return true;

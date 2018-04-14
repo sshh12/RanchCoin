@@ -40,7 +40,7 @@ function makeTabs() {
 
 function makeBtns() {
 
-  $('#inputSendNameEmail').on('change', () => {
+  $('#inputSendNameEmail').on('keypress', () => {
 
     let query = $('#inputSendNameEmail').val();
 
