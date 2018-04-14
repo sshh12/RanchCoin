@@ -26,20 +26,21 @@
 
             <div class="input-group mb-3">
               <input type="text" class="form-control" id="inputSendNameEmail" placeholder="Name/Email">
+              <input type="hidden" id="sendAddress">
               <div class="input-group-append">
                 <button id="useQRBtn" href="#" class="btn btn-primary input-group-btn">Use QR Code</button>
               </div>
+              <div class="valid-feedback" id="sendFeedback"></div>
             </div>
 
             <div class="form-group">
               <label for="inputMessage">Message</label>
-              <textarea class="form-control" id="inputMessage" rows="3"></textarea>
+              <textarea class="form-control" id="sendMessage" rows="3"></textarea>
             </div>
 
-            <div class="form-group has-success">
-              <label class="form-control-label" for="inputSuccess1">Amount</label>
-              <input type="number" value="0" class="form-control is-valid" id="inputValid">
-              <div class="valid-feedback">Success! You've done it.</div>
+            <div class="form-group">
+              <label class="form-control-label">Amount</label>
+              <input type="number" value="0.00" class="form-control is-valid" id="sendAmount">
             </div>
 
             <button id="sendMoneyBtn" href="#" class="btn btn-success">Send</button>
@@ -62,25 +63,7 @@
       <div id="page-request">
         <form class="text-center">
 
-            <h2>Request</h2>
-
-            <div class="form-group">
-              <label for="inputRequestNameEmail">Name or Email</label>
-              <input type="text" class="form-control" id="inputRequestNameEmail" aria-describedby="sendhelp" placeholder="Name/Email">
-            </div>
-
-            <div class="form-group">
-              <label for="inputMessage">Message</label>
-              <textarea class="form-control" id="inputMessage" rows="3"></textarea>
-            </div>
-
-            <div class="form-group has-success">
-              <label class="form-control-label" for="inputSuccess1">Amount</label>
-              <input type="number" value="0" class="form-control is-valid" id="inputValid">
-              <div class="valid-feedback">Success! You've done it.</div>
-            </div>
-
-            <button id="sendMoneyBtn" href="#" class="btn btn-success">Request</button>
+            <h2>Request (TODO)</h2>
 
         </form>
       </div>
@@ -103,6 +86,7 @@
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script defer src="/__/firebase/4.12.1/firebase-app.js"></script>
     <script defer src="/__/firebase/4.12.1/firebase-auth.js"></script>
     <script defer src="/__/firebase/4.12.1/firebase-database.js"></script>

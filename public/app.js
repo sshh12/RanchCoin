@@ -1,5 +1,9 @@
 let db = firebase.database();
 
+String.prototype.toProperCase = function () { // https://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript
+    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+};
+
 $(document).ready(function() {
 
   makeTabs();
@@ -40,30 +44,81 @@ function makeTabs() {
 
 function makeBtns() {
 
-  $('#inputSendNameEmail').on('keypress', () => {
+  function updateSend(addressData) {
+
+    if(!addressData) {
+      $('#inputSendNameEmail').removeClass('is-valid').addClass('is-invalid');
+      $('#sendFeedback').removeClass('valid-feedback').addClass('invalid-feedback');
+      $('#sendFeedback').html('No accounts found...');
+      $('#sendAddress').val('');
+    } else if(Object.keys(addressData).length == 1) {
+      let toUID = Object.keys(addressData)[0];
+      $('#inputSendNameEmail').addClass('is-valid').removeClass('is-invalid');
+      $('#sendFeedback').addClass('valid-feedback').removeClass('invalid-feedback');
+      $('#sendFeedback').html('Account found! ' + addressData[toUID].name.toProperCase());
+      $('#sendAddress').val(toUID);
+    } else {
+      $('#inputSendNameEmail').removeClass('is-valid').addClass('is-invalid');
+      $('#sendFeedback').removeClass('valid-feedback').addClass('invalid-feedback');
+      $('#sendFeedback').html('Multiple accounts found...');
+      $('#sendAddress').val('');
+    }
+
+  }
+
+  $('#inputSendNameEmail').on('keyup', () => {
 
     let query = $('#inputSendNameEmail').val();
 
     if(query.includes('@')) {
 
       db.ref('users').orderByChild('email').equalTo(query).once('value').then((data) => {
-        console.log(data.val());
+        updateSend(data.val());
       });
 
     } else if(query.includes(" ")) {
 
       db.ref('users').orderByChild('name').equalTo(query).once('value').then((data) => {
-        console.log(data.val());
+        updateSend(data.val());
       });
 
     } else {
 
       db.ref('users').orderByChild('firstname').equalTo(query).once('value').then((data) => {
-        console.log(data.val());
+        updateSend(data.val());
       });
 
     }
 
   });
+
+  $('#sendAmount').on('keyup', () => {
+
+    let amt = $('#sendAmount').val();
+
+    if(amt < 0 || amt > account.balance) {
+      $('#sendAmount').removeClass('is-valid').addClass('is-invalid');
+    } else {
+      $('#sendAmount').addClass('is-valid').removeClass('is-invalid');
+    }
+
+  });
+
+  $('#sendMoneyBtn').on('click', () => {
+
+    let address = $('#sendAddress').val();
+    let amt = parseFloat($('#sendAmount').val());
+    let message = $('#sendMessage').val();
+
+    if(amt <= 0 || amt > account.balance || address.length < 20) {
+      swal("Oops!", "Check the values you have entered.", "error");
+      return;
+    }
+
+    account.sendMoney(address, amt, message);
+
+    swal("RanchCoin Sent", "", "success");
+
+  })
 
 }

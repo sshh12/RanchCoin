@@ -14,6 +14,7 @@ class Account {
   onBalance(data) {
     let balance = data.val() || 0.00;
     $('#cur-balance').html(balance.toFixed(2) + ' RC');
+    account.balance = balance;
   }
 
   onTransactions(data) {
@@ -28,29 +29,25 @@ class Account {
       db.ref(`transactions/${key}`).on('value', function(d) {
         let transData = d.val();
         if(transData.sender === auth.uid) {
-          $('#transaction-list').append(`<li class="list-group-item">Purchase <span class="trans-amt badge badge-danger">-${transData.amount}</span></li>`);
+          $('#transaction-list').append(`<li class="list-group-item">To <b>${transData.senderName}</b>, &nbsp;&nbsp;<i>${transData.message}</i><span class="trans-amt badge badge-danger">-${transData.amount.toFixed(2)}</span></li>`);
         } else {
-          $('#transaction-list').append(`<li class="list-group-item">Payment <span class="trans-amt badge badge-success">+${transData.amount}</span></li>`);
+          $('#transaction-list').append(`<li class="list-group-item">From <b>${transData.senderName}</b>, &nbsp;&nbsp;<i>${transData.message}</i><span class="trans-amt badge badge-success">+${transData.amount.toFixed(2)}</span></li>`);
         }
       });
     }
 
   }
 
-  sendMoney(toUID, amount) { // account.sendMoney("7vJnUpmeMnaKM8u8E3DbHxGNXfw1", 10)
-
-    let balance = parseFloat($('#cur-balance').html().replace(" RC", ""));
-
-    if(amount < 0 || balance < amount) {
-      return;
-    }
+  sendMoney(toUID, amount, message) {
 
     let newTransactionRef = db.ref('transactions').push();
     newTransactionRef.set({
         sender: auth.uid,
         receiver: toUID,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
-        amount: amount
+        amount: amount,
+        message: message,
+        senderName: auth.user.displayName.toProperCase()
     });
 
   }
