@@ -25,11 +25,13 @@ class Account {
       $('#transaction-list').html("");
     }
 
+    transactions = reverseObj(transactions);
+
     for(let key in transactions) {
       db.ref(`transactions/${key}`).on('value', function(d) {
         let transData = d.val();
         if(transData.sender === auth.uid) {
-          $('#transaction-list').append(`<li class="list-group-item">To <b>${transData.senderName}</b>, &nbsp;&nbsp;<i>${transData.message}</i><span class="trans-amt badge badge-danger">-${transData.amount.toFixed(2)}</span></li>`);
+          $('#transaction-list').append(`<li class="list-group-item">To <b>${transData.receiverName}</b>, &nbsp;&nbsp;<i>${transData.message}</i><span class="trans-amt badge badge-danger">-${transData.amount.toFixed(2)}</span></li>`);
         } else {
           $('#transaction-list').append(`<li class="list-group-item">From <b>${transData.senderName}</b>, &nbsp;&nbsp;<i>${transData.message}</i><span class="trans-amt badge badge-success">+${transData.amount.toFixed(2)}</span></li>`);
         }
@@ -38,7 +40,7 @@ class Account {
 
   }
 
-  sendMoney(toUID, amount, message) {
+  sendMoney(toUID, amount, message="", receiverName="") {
 
     let newTransactionRef = db.ref('transactions').push();
     newTransactionRef.set({
@@ -47,7 +49,8 @@ class Account {
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         amount: amount,
         message: message,
-        senderName: auth.user.displayName.toProperCase()
+        senderName: auth.user.displayName.toProperCase(),
+        receiverName: receiverName
     });
 
   }

@@ -27,6 +27,7 @@
             <div class="input-group mb-3">
               <input type="text" class="form-control" id="inputSendNameEmail" placeholder="Name/Email">
               <input type="hidden" id="sendAddress">
+              <input type="hidden" id="sendName">
               <div class="input-group-append">
                 <button id="useQRBtn" href="#" class="btn btn-primary input-group-btn">Use QR Code</button>
               </div>
@@ -40,7 +41,7 @@
 
             <div class="form-group">
               <label class="form-control-label">Amount</label>
-              <input type="number" value="0.00" class="form-control is-valid" id="sendAmount">
+              <input type="text" value="0.00" class="form-control is-valid" id="sendAmount">
             </div>
 
             <button id="sendMoneyBtn" href="#" class="btn btn-success">Send</button>

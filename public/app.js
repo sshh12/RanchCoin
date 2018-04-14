@@ -4,6 +4,19 @@ String.prototype.toProperCase = function () { // https://stackoverflow.com/quest
     return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 };
 
+function reverseObj(obj) {
+
+    let newObj = {};
+    let keys = Object.keys(obj);
+
+    for (var i = keys.length - 1; i >= 0; i--) {
+        let value = obj[keys[i]];
+        newObj[keys[i]] = value;
+    }
+
+    return newObj;
+}
+
 $(document).ready(function() {
 
   makeTabs();
@@ -57,6 +70,7 @@ function makeBtns() {
       $('#sendFeedback').addClass('valid-feedback').removeClass('invalid-feedback');
       $('#sendFeedback').html('Account found! ' + addressData[toUID].name.toProperCase());
       $('#sendAddress').val(toUID);
+      $('#sendName').val(addressData[toUID].name.toProperCase());
     } else {
       $('#inputSendNameEmail').removeClass('is-valid').addClass('is-invalid');
       $('#sendFeedback').removeClass('valid-feedback').addClass('invalid-feedback');
@@ -94,7 +108,7 @@ function makeBtns() {
 
   $('#sendAmount').on('keyup', () => {
 
-    let amt = $('#sendAmount').val();
+    let amt = parseFloat($('#sendAmount').val());
 
     if(amt < 0 || amt > account.balance) {
       $('#sendAmount').removeClass('is-valid').addClass('is-invalid');
@@ -109,13 +123,14 @@ function makeBtns() {
     let address = $('#sendAddress').val();
     let amt = parseFloat($('#sendAmount').val());
     let message = $('#sendMessage').val();
+    let receiverName = $('#sendName').val();
 
-    if(amt <= 0 || amt > account.balance || address.length < 20) {
-      swal("Oops!", "Check the values you have entered.", "error");
+    if(amt <= 0 || amt > account.balance || address.length < 20 || address == auth.uid) {
+      swal("Oops", "Check the values you have entered.", "error");
       return;
     }
 
-    account.sendMoney(address, amt, message);
+    account.sendMoney(address, amt, message, receiverName);
 
     swal("RanchCoin Sent", "", "success");
 
