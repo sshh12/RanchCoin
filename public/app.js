@@ -27,7 +27,23 @@ $(document).ready(function() {
 });
 
 function postAuthInit() {
+
   window.account = new Account();
+
+  /*let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+  scanner.addListener('scan', function (content) {
+    alert(content);
+  });
+  Instascan.Camera.getCameras().then(function(cameras) {
+    if (cameras.length > 0) {
+      scanner.start(cameras[1]);
+    } else {
+      console.error('No cameras found.');
+    }
+  }).catch(function (e) {
+    console.error(e);
+  });*/
+
 }
 
 function makeTabs() {
@@ -110,7 +126,7 @@ function makeBtns() {
 
     let amt = parseFloat($('#sendAmount').val());
 
-    if(amt < 0 || amt > account.balance) {
+    if(amt <= 0 || amt > account.balance) {
       $('#sendAmount').removeClass('is-valid').addClass('is-invalid');
     } else {
       $('#sendAmount').addClass('is-valid').removeClass('is-invalid');
