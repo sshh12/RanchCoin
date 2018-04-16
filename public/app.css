@@ -3,6 +3,10 @@
   overflow: hidden;
 }
 
+.container {
+  overflow: hidden;
+}
+
 #balance.jumbotron {
   margin-top: 1em;
 }

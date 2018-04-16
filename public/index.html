@@ -23,9 +23,20 @@
 
         <div class="text-center">
 
-            <h2 id="sendHeader">Send</h2>
+            <h2 id="sendHeader">...</h2>
 
-            <!--<video id="preview"></video>-->
+            <div class="modal fade" id="scanQRModal">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="centered" class="modal-body">
+                    <video id="qrpreview"></video>
+                  </div>
+                  <div class="modal-footer justify-content-center">
+                    <button type="button" id="scanQRClose" class="btn btn-info">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div class="input-group mb-3">
               <input type="text" class="form-control" id="inputSendNameEmail" placeholder="Name/Email">
@@ -56,14 +67,14 @@
       <div id="page-balance">
 
         <div id="balance" class="jumbotron jumbotron-fluid">
-          <h1 class="display-4" id="cur-balance">--.--- RC</h1>
+          <h1 class="display-4" id="cur-balance">--.-- RC</h1>
         </div>
 
         <div class="modal fade" id="myQRModal">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-body">
-                <div class="centered" id="qrcode"></div>
+                <div id="qrcode"></div>
               </div>
               <div class="modal-footer justify-content-center">
                 <button type="button" id="myQRClose" class="btn btn-info">Close</button>

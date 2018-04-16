@@ -17,7 +17,7 @@ function reverseObj(obj) {
     return newObj;
 }
 
-$(document).ready(function() {
+$(document).ready(() => {
 
   window.tab = 'balance';
 
@@ -32,20 +32,6 @@ $(document).ready(function() {
 function postAuthInit() {
 
   window.account = new Account();
-
-  /*let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-  scanner.addListener('scan', function (content) {
-    alert(content);
-  });
-  Instascan.Camera.getCameras().then(function(cameras) {
-    if (cameras.length > 0) {
-      scanner.start(cameras[1]);
-    } else {
-      console.error('No cameras found.');
-    }
-  }).catch(function (e) {
-    console.error(e);
-  });*/
 
 }
 
@@ -78,6 +64,36 @@ function makeTabs() {
 }
 
 function makeQRBtns() {
+
+  $('#useQRBtn').bind('touchend', () => {
+
+    $('#sendHeader').html('test');
+
+    /*window.scanner = new Instascan.Scanner({ video: document.getElementById('qrpreview') });
+    scanner.addListener('scan', (content) => {
+      alert(content);
+    });
+    Instascan.Camera.getCameras().then((cameras) => {
+      if (cameras.length > 0) {
+        alert(scanner);
+        alert(JSON.stringify(cameras));
+        scanner.start(cameras[0]);
+        $('#scanQRModal').modal('show');
+      } else {
+        swal('Oops', 'No cameras found.', 'error');
+      }
+    }).catch(function (e) {
+      alert(e);
+    });*/
+
+  });
+
+  $('#scanQRClose').on('click', () => {
+
+    $('#scanQRModal').modal('hide');
+    scanner.stop();
+
+  });
 
   $('#showMyQR').on('click', () => {
 
@@ -127,7 +143,7 @@ function makeSendBtns() {
 
   $('#inputSendNameEmail').on('keyup', () => {
 
-    let query = $('#inputSendNameEmail').val();
+    let query = $('#inputSendNameEmail').val().toLowerCase();
 
     if(query.includes('@')) {
 
