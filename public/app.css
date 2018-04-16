@@ -12,6 +12,16 @@ h2 {
   margin-bottom: 1em;
 }
 
+#qrcode img {
+  margin: auto;
+}
+
+.large-icon {
+  text-align: center;
+  font-size: 3em;
+  margin-top: -0.5em;
+}
+
 .centered {
   text-align: center;
 }

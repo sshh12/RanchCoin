@@ -22,7 +22,8 @@ $(document).ready(function() {
   window.tab = 'balance';
 
   makeTabs();
-  makeBtns();
+  makeQRBtns();
+  makeSendBtns();
 
   window.auth = new Auth();
 
@@ -76,7 +77,30 @@ function makeTabs() {
 
 }
 
-function makeBtns() {
+function makeQRBtns() {
+
+  $('#showMyQR').on('click', () => {
+
+    let qrcode = new QRCode("qrcode", {
+        text: auth.uid,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+    });
+
+    $('#myQRModal').modal('show');
+    $('#myQRModal').on('hide.bs.modal', () => {
+      $('#qrcode').html('');
+    });
+
+  });
+
+  $('#myQRClose').on('click', () => {
+    $('#myQRModal').modal('hide');
+  });
+
+}
+
+function makeSendBtns() {
 
   function updateTransaction(addressData) {
 
