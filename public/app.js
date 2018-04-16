@@ -19,6 +19,8 @@ function reverseObj(obj) {
 
 $(document).ready(function() {
 
+  window.tab = 'balance';
+
   makeTabs();
   makeBtns();
 
@@ -49,31 +51,34 @@ function postAuthInit() {
 function makeTabs() {
 
   $('#page-send').hide();
-  $('#page-request').hide();
 
   $('#btn-send').on('click', () => {
-    $('#page-send').show(); $('#btn-send').addClass('active');
+    $('#page-send').show(); $('#btn-request').removeClass('active'); $('#btn-send').addClass('active');
     $('#page-balance').hide(); $('#btn-balance').removeClass('active');
-    $('#page-request').hide(); $('#btn-request').removeClass('active');
+    $('#sendHeader').html('Send');
+    $('#sendTransactionBtn').html('Send');
+    window.tab = 'send';
   });
 
   $('#btn-balance').on('click', () => {
-    $('#page-send').hide(); $('#btn-send').removeClass('active');
+    $('#page-send').hide(); $('#btn-send').removeClass('active'); $('#btn-request').removeClass('active');
     $('#page-balance').show(); $('#btn-balance').addClass('active');
-    $('#page-request').hide(); $('#btn-request').removeClass('active');
+    window.tab = 'balance';
   });
 
   $('#btn-request').on('click', () => {
-    $('#page-send').hide(); $('#btn-send').removeClass('active');
+    $('#page-send').show(); $('#btn-send').removeClass('active'); $('#btn-request').addClass('active');
     $('#page-balance').hide(); $('#btn-balance').removeClass('active');
-    $('#page-request').show(); $('#btn-request').addClass('active');
+    $('#sendHeader').html('Request');
+    $('#sendTransactionBtn').html('Request');
+    window.tab = 'request';
   });
 
 }
 
 function makeBtns() {
 
-  function updateSend(addressData) {
+  function updateTransaction(addressData) {
 
     if(!addressData) {
       $('#inputSendNameEmail').removeClass('is-valid').addClass('is-invalid');
@@ -103,19 +108,19 @@ function makeBtns() {
     if(query.includes('@')) {
 
       db.ref('users').orderByChild('email').equalTo(query).once('value').then((data) => {
-        updateSend(data.val());
+        updateTransaction(data.val());
       });
 
     } else if(query.includes(" ")) {
 
       db.ref('users').orderByChild('name').equalTo(query).once('value').then((data) => {
-        updateSend(data.val());
+        updateTransaction(data.val());
       });
 
     } else {
 
       db.ref('users').orderByChild('firstname').equalTo(query).once('value').then((data) => {
-        updateSend(data.val());
+        updateTransaction(data.val());
       });
 
     }
@@ -126,7 +131,7 @@ function makeBtns() {
 
     let amt = parseFloat($('#sendAmount').val());
 
-    if(amt <= 0 || amt > account.balance) {
+    if(amt <= 0 || (amt > account.balance && window.tab == 'send')) {
       $('#sendAmount').removeClass('is-valid').addClass('is-invalid');
     } else {
       $('#sendAmount').addClass('is-valid').removeClass('is-invalid');
@@ -134,22 +139,30 @@ function makeBtns() {
 
   });
 
-  $('#sendMoneyBtn').on('click', () => {
+  $('#sendTransactionBtn').on('click', () => {
 
     let address = $('#sendAddress').val();
     let amt = parseFloat($('#sendAmount').val());
     let message = $('#sendMessage').val();
     let receiverName = $('#sendName').val();
 
-    if(amt <= 0 || amt > account.balance || address.length < 20 || address == auth.uid) {
-      swal("Oops", "Check the values you have entered.", "error");
-      return;
+    if(window.tab == 'send') {
+
+      if(amt <= 0 || amt > account.balance || address.length < 20 || address == auth.uid) {
+        swal("Oops", "Unable to complete transaction.", "error");
+        return;
+      }
+
+      account.sendMoney(address, amt, message, receiverName);
+
+      swal("RanchCoin Sent", "", "success");
+
+    } else if(window.tab == 'request') {
+
+      swal("Not Supported", "", "warning");
+
     }
 
-    account.sendMoney(address, amt, message, receiverName);
-
-    swal("RanchCoin Sent", "", "success");
-
-  })
+  });
 
 }

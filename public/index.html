@@ -23,9 +23,9 @@
 
         <div class="text-center">
 
-            <h2>Send</h2>
+            <h2 id="sendHeader">Send</h2>
 
-            <video id="preview"></video>
+            <!--<video id="preview"></video>-->
 
             <div class="input-group mb-3">
               <input type="text" class="form-control" id="inputSendNameEmail" placeholder="Name/Email">
@@ -47,7 +47,7 @@
               <input type="text" value="0.00" class="form-control is-valid" id="sendAmount">
             </div>
 
-            <button id="sendMoneyBtn" href="#" class="btn btn-success">Send</button>
+            <button id="sendTransactionBtn" href="#" class="btn btn-success">Send</button>
 
         </div>
 
@@ -63,14 +63,6 @@
           <li class="list-group-item">No Transactions <span class="trans-amt badge badge-primary">--.--</span></li>
         </ul>
 
-      </div>
-
-      <div id="page-request">
-        <form class="text-center">
-
-            <h2>Request (TODO)</h2>
-
-        </form>
       </div>
 
       <nav class="navbar fixed-bottom navbar-dark bg-primary">
