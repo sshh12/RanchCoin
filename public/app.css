@@ -1,3 +1,7 @@
+#body {
+  height: 100%;
+  overflow: hidden;
+}
 
 #balance.jumbotron {
   margin-top: 1em;
@@ -14,6 +18,11 @@ h2 {
 
 #qrcode img {
   margin: auto;
+}
+
+#transaction-list {
+  overflow: scroll;
+  height: 25em;
 }
 
 .large-icon {
