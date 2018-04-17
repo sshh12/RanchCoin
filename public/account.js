@@ -31,9 +31,9 @@ class Account {
       db.ref(`transactions/${key}`).on('value', function(d) {
         let transData = d.val();
         if(transData.sender === auth.uid) {
-          $('#transaction-list').append(`<li class="list-group-item">To <b>${transData.receiverName}</b>, &nbsp;&nbsp;<i>${transData.message}</i><span class="trans-amt badge badge-danger">-${transData.amount.toFixed(2)}</span></li>`);
+          $('#transaction-list').append(`<li class="list-group-item">To <b>${transData.receiverName}</b> <span class="trans-amt badge badge-danger">-${transData.amount.toFixed(2)}</span></li>`);
         } else {
-          $('#transaction-list').append(`<li class="list-group-item">From <b>${transData.senderName}</b>, &nbsp;&nbsp;<i>${transData.message}</i><span class="trans-amt badge badge-success">+${transData.amount.toFixed(2)}</span></li>`);
+          $('#transaction-list').append(`<li class="list-group-item">From <b>${transData.senderName}</b> <span class="trans-amt badge badge-success">+${transData.amount.toFixed(2)}</span></li>`);
         }
       });
     }

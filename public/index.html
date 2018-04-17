@@ -67,7 +67,7 @@
       <div id="page-balance">
 
         <div id="balance" class="jumbotron jumbotron-fluid">
-          <h1 class="display-3" id="cur-balance">--.-- RC</h1>
+          <h1 id="cur-balance">--.-- RC</h1>
         </div>
 
         <div class="modal fade" id="myQRModal">
@@ -83,7 +83,11 @@
           </div>
         </div>
 
-        <div class="large-icon" id="showMyQR"><i class="fas fa-qrcode"></i></div>
+        <div class="qr-icon" id="showMyQR"><i class="fas fa-qrcode"></i></div>
+
+        <ul class="list-group" id="requests-list">
+          <li class="list-group-item">Requested By <b>Test</b> <span class="trans-amt badge badge-warning">-1.00?</span></li>
+        </ul>
 
         <ul class="list-group" id="transaction-list">
           <li class="list-group-item">No Transactions <span class="trans-amt badge badge-primary">--.--</span></li>
