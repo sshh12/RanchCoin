@@ -25,9 +25,9 @@ class Account {
       $('#transaction-list').html("");
     }
 
-    transactions = reverseObj(transactions);
+    let transKeys = sortedObjKeys(transactions, -1);
 
-    for(let key in transactions) {
+    for(let key of transKeys) {
       db.ref(`transactions/${key}`).on('value', function(d) {
         let transData = d.val();
         if(transData.sender === auth.uid) {
@@ -43,7 +43,7 @@ class Account {
   sendMoney(toUID, amount, message="", receiverName="") {
 
     let newTransactionRef = db.ref('transactions').push();
-    newTransactionRef.set({
+    return newTransactionRef.set({
         sender: auth.uid,
         receiver: toUID,
         timestamp: firebase.database.ServerValue.TIMESTAMP,

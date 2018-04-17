@@ -4,17 +4,9 @@ String.prototype.toProperCase = function () { // https://stackoverflow.com/quest
     return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 };
 
-function reverseObj(obj) {
+function sortedObjKeys(obj, flip = 1) {
 
-    let newObj = {};
-    let keys = Object.keys(obj);
-
-    for (var i = keys.length - 1; i >= 0; i--) {
-        let value = obj[keys[i]];
-        newObj[keys[i]] = value;
-    }
-
-    return newObj;
+    return Object.keys(obj).sort((a,b) => (obj[a] - obj[b]) * flip);
 }
 
 $(document).ready(() => {
@@ -183,14 +175,16 @@ function makeSendBtns() {
 
     if(window.tab == 'send') {
 
-      if(amt <= 0 || amt > account.balance || address.length < 20 || address == auth.uid) {
+      if(amt <= 0 || amt > account.balance || !(/[\w]{10,}/.test(address)) || address == auth.uid) {
         swal("Oops", "Unable to complete transaction.", "error");
         return;
       }
 
-      account.sendMoney(address, amt, message, receiverName);
+      account.sendMoney(address, amt, message, receiverName).then(() => {
 
-      swal("RanchCoin Sent", "", "success");
+        swal("RanchCoin Sent", "", "success");
+
+      });
 
     } else if(window.tab == 'request') {
 
