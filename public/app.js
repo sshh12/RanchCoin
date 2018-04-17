@@ -65,26 +65,44 @@ function makeTabs() {
 
 function makeQRBtns() {
 
-  $('#useQRBtn').bind('touchend', () => {
+  $('#useQRBtn').on('click', () => {
 
-    $('#sendHeader').html('test');
-
-    /*window.scanner = new Instascan.Scanner({ video: document.getElementById('qrpreview') });
+    window.scanner = new Instascan.Scanner({ video: document.getElementById('qrpreview'), mirror: false, backgroundScan: false });
     scanner.addListener('scan', (content) => {
-      alert(content);
+
+      if(/[\w]{10,}/.test(content)) {
+
+        db.ref(`users/${content}`).once('value').then((data) => {
+
+          if(data) {
+
+            let addresses = {};
+            addresses[content] = data.val();
+            $('#inputSendNameEmail').val(addresses[content].email);
+            updateTransaction(addresses);
+
+            $('#scanQRModal').modal('hide');
+            scanner.stop();
+
+          }
+
+        });
+
+      }
     });
+
     Instascan.Camera.getCameras().then((cameras) => {
+
       if (cameras.length > 0) {
-        alert(scanner);
-        alert(JSON.stringify(cameras));
-        scanner.start(cameras[0]);
+        scanner.start(cameras[cameras.length - 1]);
         $('#scanQRModal').modal('show');
       } else {
         swal('Oops', 'No cameras found.', 'error');
       }
+
     }).catch(function (e) {
       alert(e);
-    });*/
+    });
 
   });
 
@@ -117,29 +135,6 @@ function makeQRBtns() {
 }
 
 function makeSendBtns() {
-
-  function updateTransaction(addressData) {
-
-    if(!addressData) {
-      $('#inputSendNameEmail').removeClass('is-valid').addClass('is-invalid');
-      $('#sendFeedback').removeClass('valid-feedback').addClass('invalid-feedback');
-      $('#sendFeedback').html('No accounts found...');
-      $('#sendAddress').val('');
-    } else if(Object.keys(addressData).length == 1) {
-      let toUID = Object.keys(addressData)[0];
-      $('#inputSendNameEmail').addClass('is-valid').removeClass('is-invalid');
-      $('#sendFeedback').addClass('valid-feedback').removeClass('invalid-feedback');
-      $('#sendFeedback').html('Account found! ' + addressData[toUID].name.toProperCase());
-      $('#sendAddress').val(toUID);
-      $('#sendName').val(addressData[toUID].name.toProperCase());
-    } else {
-      $('#inputSendNameEmail').removeClass('is-valid').addClass('is-invalid');
-      $('#sendFeedback').removeClass('valid-feedback').addClass('invalid-feedback');
-      $('#sendFeedback').html('Multiple accounts found...');
-      $('#sendAddress').val('');
-    }
-
-  }
 
   $('#inputSendNameEmail').on('keyup', () => {
 
@@ -204,5 +199,28 @@ function makeSendBtns() {
     }
 
   });
+
+}
+
+function updateTransaction(addressData) {
+
+  if(!addressData) {
+    $('#inputSendNameEmail').removeClass('is-valid').addClass('is-invalid');
+    $('#sendFeedback').removeClass('valid-feedback').addClass('invalid-feedback');
+    $('#sendFeedback').html('No accounts found...');
+    $('#sendAddress').val('');
+  } else if(Object.keys(addressData).length == 1) {
+    let toUID = Object.keys(addressData)[0];
+    $('#inputSendNameEmail').addClass('is-valid').removeClass('is-invalid');
+    $('#sendFeedback').addClass('valid-feedback').removeClass('invalid-feedback');
+    $('#sendFeedback').html('Account found! ' + addressData[toUID].name.toProperCase());
+    $('#sendAddress').val(toUID);
+    $('#sendName').val(addressData[toUID].name.toProperCase());
+  } else {
+    $('#inputSendNameEmail').removeClass('is-valid').addClass('is-invalid');
+    $('#sendFeedback').removeClass('valid-feedback').addClass('invalid-feedback');
+    $('#sendFeedback').html('Multiple accounts found...');
+    $('#sendAddress').val('');
+  }
 
 }
