@@ -188,7 +188,16 @@ function makeSendBtns() {
 
     } else if(window.tab == 'request') {
 
-      swal("Not Supported", "", "warning");
+      if(amt <= 0 || !(/[\w]{10,}/.test(address)) || address == auth.uid) {
+        swal("Oops", "Unable to complete request.", "error");
+        return;
+      }
+
+      account.requestMoney(address, amt, message, receiverName).then(() => {
+
+        swal("Request Sent", "", "success");
+
+      });
 
     }
 

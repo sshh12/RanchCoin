@@ -8,44 +8,74 @@ exports.handleTransaction = functions.database.ref('/transactions/{transID}').on
   let data = transaction.val();
   let key = transaction.key;
 
-  admin.database().ref('accounts/' + data.sender).transaction(function(user) {
+  if(data.type == "send") {
 
-    if (user) {
+    admin.database().ref('accounts/' + data.sender).transaction(function(user) {
 
-      user.balance -= data.amount;
-      if(!user.transactions) {
-        user.transactions = {};
+      if (user) {
+
+        user.balance -= data.amount;
+        if(!user.transactions) {
+          user.transactions = {};
+        }
+        user.transactions[key] = data.timestamp;
+
       }
-      user.transactions[key] = data.timestamp;
+      return user;
 
-    }
-    return user;
+    });
 
-  });
+    admin.database().ref('accounts/' + data.receiver).transaction(function(user) {
 
-  admin.database().ref('accounts/' + data.receiver).transaction(function(user) {
+      if (user) {
 
-    if (user) {
+        user.balance += data.amount;
 
-      user.balance += data.amount;
+        if(!user.transactions) {
+          user.transactions = {};
+        }
+        user.transactions[key] = data.timestamp;
 
-      if(!user.transactions) {
-        user.transactions = {};
+      } else {
+
+        user = {
+          balance: data.amount,
+          requests: {},
+          transactions: {}
+        }
+        user.transactions[key] = data.timestamp;
+
       }
-      user.transactions[key] = data.timestamp;
+      return user;
 
-    } else {
+    });
 
-      user = {
-        balance: data.amount,
-        transactions: {}
+  } else if(data.type == "request") {
+
+    admin.database().ref('accounts/' + data.receiver).transaction(function(user) {
+
+      if (user) {
+
+        if(!user.requests) {
+          user.requests = {};
+        }
+        user.requests[key] = data.timestamp;
+
+      } else {
+
+        user = {
+          balance: 0,
+          requests: {},
+          transactions: {}
+        }
+        user.requests[key] = data.timestamp;
+
       }
-      user.transactions[key] = data.timestamp;
+      return user;
 
-    }
-    return user;
+    });
 
-  });
+  }
 
   return true;
 
