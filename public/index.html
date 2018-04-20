@@ -19,24 +19,24 @@
 
     <div class="container">
 
+      <div class="modal fade" id="scanQRModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="centered" class="modal-body">
+              <video width="250" height="250" id="qrpreview"></video>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button type="button" id="scanQRClose" class="btn btn-info">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div id="page-send">
 
         <div class="text-center">
 
             <h2 id="sendHeader">...</h2>
-
-            <div class="modal fade" id="scanQRModal">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="centered" class="modal-body">
-                    <video width="250" height="250" id="qrpreview"></video>
-                  </div>
-                  <div class="modal-footer justify-content-center">
-                    <button type="button" id="scanQRClose" class="btn btn-info">Close</button>
-                  </div>
-                </div>
-              </div>
-            </div>
 
             <div class="input-group mb-3">
               <input type="text" class="form-control" id="inputSendNameEmail" placeholder="Name/Email">
@@ -83,7 +83,10 @@
           </div>
         </div>
 
-        <div class="qr-icon" id="showMyQR"><i class="fas fa-qrcode"></i></div>
+        <div class="row">
+          <div class="small-icon" id="showMyQR"><i class="fas fa-qrcode"></i></div>
+          <div class="small-icon" id="showDepositOptions"><i class="fas fa-box-open"></i></div>
+        </div>
 
         <ul class="list-group" id="requests-list">
         </ul>

@@ -89,6 +89,28 @@ class Account {
     db.ref(`accounts/${auth.uid}/requests/${requestID}`).remove();
   }
 
+  doDeposit(certCode) {
+
+    if(certCode != "") {
+
+      swal("Redeemed!", "Your balance will update shortly.", "success");
+
+      let newTransactionRef = db.ref('transactions').push();
+      return newTransactionRef.set({
+          type: "cert",
+          sender: auth.uid,
+          receiver: certCode,
+          timestamp: firebase.database.ServerValue.TIMESTAMP,
+          amount: 1, // all params ignored
+          message: null,
+          senderName: null,
+          receiverName: null
+      });
+
+    }
+
+  }
+
   sendMoney(toUID, amount, message="", receiverName="") {
 
     let newTransactionRef = db.ref('transactions').push();

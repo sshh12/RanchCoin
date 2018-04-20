@@ -15,6 +15,7 @@ $(document).ready(() => {
 
   makeTabs();
   makeQRBtns();
+  makeDepositBtns();
   makeSendBtns();
 
   window.auth = new Auth();
@@ -55,12 +56,31 @@ function makeTabs() {
 
 }
 
+function initQRReader(callback) {
+
+  window.scanner = new Instascan.Scanner({ video: document.getElementById('qrpreview'), mirror: false, backgroundScan: false });
+  scanner.addListener('scan', callback);
+
+  Instascan.Camera.getCameras().then((cameras) => {
+
+    if (cameras.length > 0) {
+      scanner.start(cameras[cameras.length - 1]);
+      $('#scanQRModal').modal('show');
+    } else {
+      swal('Oops', 'No cameras found.', 'error');
+    }
+
+  }).catch(function (e) {
+    alert(e);
+  });
+
+}
+
 function makeQRBtns() {
 
   $('#useQRBtn').on('click', () => {
 
-    window.scanner = new Instascan.Scanner({ video: document.getElementById('qrpreview'), mirror: false, backgroundScan: false });
-    scanner.addListener('scan', (content) => {
+    initQRReader((content) => {
 
       if(/[\w]{10,}/.test(content)) {
 
@@ -81,28 +101,14 @@ function makeQRBtns() {
         });
 
       }
-    });
 
-    Instascan.Camera.getCameras().then((cameras) => {
-
-      if (cameras.length > 0) {
-        scanner.start(cameras[cameras.length - 1]);
-        $('#scanQRModal').modal('show');
-      } else {
-        swal('Oops', 'No cameras found.', 'error');
-      }
-
-    }).catch(function (e) {
-      alert(e);
     });
 
   });
 
   $('#scanQRClose').on('click', () => {
-
     $('#scanQRModal').modal('hide');
     scanner.stop();
-
   });
 
   $('#showMyQR').on('click', () => {
@@ -122,6 +128,36 @@ function makeQRBtns() {
 
   $('#myQRClose').on('click', () => {
     $('#myQRModal').modal('hide');
+  });
+
+}
+
+function makeDepositBtns() {
+
+  $('#showDepositOptions').on('click', () => {
+    swal({
+      title: 'How?',
+      buttons: ["Manually", "QR Code"]
+    }).then((response) => {
+      if(response) {
+        initQRReader((content) => {
+          $('#scanQRModal').modal('hide');
+          scanner.stop();
+          account.doDeposit(content);
+        });
+      } else {
+        swal({
+          closeOnClickOutside: false,
+          content: {
+            element: "input",
+            attributes: {
+              placeholder: "Deposit Code",
+              type: "text"
+            },
+          },
+        }).then(account.doDeposit);
+      }
+    });
   });
 
 }

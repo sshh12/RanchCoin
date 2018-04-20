@@ -12,7 +12,7 @@
         ".read": "$uid === auth.uid",
         ".write": false,
         "requests": {
-          "write": true
+          ".write": true
         }
       }
     },
@@ -21,8 +21,12 @@
         ".indexOn": ["timestamp"],
         ".write": "!data.exists() && auth.uid === newData.child('sender').val()",
         ".read": "auth.uid === data.child('sender').val() || auth.uid === data.child('receiver').val()",
-        ".validate": "newData.child('amount').isNumber() && newData.child('amount').val() > 0 && (newData.child('type').val() == 'request' || root.child('accounts').child(auth.uid).child('balance').val() > newData.child('amount').val()) && auth.uid != data.child('receiver').val()"
+        ".validate": "newData.child('amount').isNumber() && newData.child('amount').val() > 0 && (newData.child('type').val() != 'send' || root.child('accounts').child(auth.uid).child('balance').val() > newData.child('amount').val()) && auth.uid != data.child('receiver').val()"
       }
+    },
+    "certs": {
+      ".read": false,
+      ".write": false
     }
   }
 }
