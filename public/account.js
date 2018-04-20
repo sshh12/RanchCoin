@@ -44,10 +44,16 @@ class Account {
 
         if(transData.type == "send") {
           if(transData.sender === auth.uid) {
-            $('#transaction-list').append(`<li class="list-group-item">To <b>${transData.receiverName}</b> <span class="trans-amt badge badge-danger">-${transData.amount.toFixed(2)}</span></li>`);
+            $('#transaction-list').append(`<li class="list-group-item" id="trans-${key}">To <b>${transData.receiverName}</b> <span class="trans-amt badge badge-danger">-${transData.amount.toFixed(2)}</span></li>`);
           } else {
-            $('#transaction-list').append(`<li class="list-group-item">From <b>${transData.senderName}</b> <span class="trans-amt badge badge-success">+${transData.amount.toFixed(2)}</span></li>`);
+            $('#transaction-list').append(`<li class="list-group-item" id="trans-${key}">From <b>${transData.senderName}</b> <span class="trans-amt badge badge-success">+${transData.amount.toFixed(2)}</span></li>`);
           }
+          $(`#trans-${key}`).on('click', () => {
+            swal({
+              title: `${transData.sender === auth.uid ? "Sent to " + transData.receiverName: "Recieved from " + transData.senderName} ${transData.amount.toFixed(2)}`,
+              text: `${getFormattedTime(transData.timestamp)}\n\n${transData.message}`
+            });
+          });
         } else if(transData.type == "request") {
           $('#requests-list').append(`<li class="list-group-item" id="req-${key}">Request from <b>${transData.senderName}</b> <span class="trans-amt badge badge-warning">-${transData.amount.toFixed(2)}?</span></li>`);
           $(`#req-${key}`).on('click', () => {
