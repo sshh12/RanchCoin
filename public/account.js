@@ -49,13 +49,38 @@ class Account {
             $('#transaction-list').append(`<li class="list-group-item">From <b>${transData.senderName}</b> <span class="trans-amt badge badge-success">+${transData.amount.toFixed(2)}</span></li>`);
           }
         } else if(transData.type == "request") {
-          $('#requests-list').append(`<li class="list-group-item">To <b>${transData.receiverName}</b> <span class="trans-amt badge badge-warning">-${transData.amount.toFixed(2)}?</span></li>`);
+          $('#requests-list').append(`<li class="list-group-item" id="req-${key}">Request from <b>${transData.senderName}</b> <span class="trans-amt badge badge-warning">-${transData.amount.toFixed(2)}?</span></li>`);
+          $(`#req-${key}`).on('click', () => {
+            swal({
+              title: `Send ${transData.senderName} ${transData.amount.toFixed(2)}?`,
+              text: `${transData.message}`,
+              buttons: ["Remove", "Pay"],
+            }).then((response) => {
+              if(response) {
+                $('#sendFeedback').html('Tap Send to transfer requested funds.');
+                $('#sendAddress').val(transData.sender);
+                $('#inputSendNameEmail').val(transData.senderName);
+                $('#sendName').val(transData.senderName);
+                $('#sendAmount').val(transData.amount);
+                $('#sendMessage').val('Sending requested RanchCoin.');
+                $('#btn-send').trigger('click');
+                $('#sendAmount').trigger('keyup');
+                window.curRequestID = d.key;
+              } else {
+                $(`#req-${key}`).remove();
+                account.removeRequest(d.key);
+              }
+            });
+          })
         }
-
       });
 
     }
 
+  }
+
+  removeRequest(requestID) {
+    db.ref(`accounts/${auth.uid}/requests/${requestID}`).remove();
   }
 
   sendMoney(toUID, amount, message="", receiverName="") {

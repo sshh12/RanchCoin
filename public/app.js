@@ -152,6 +152,8 @@ function makeSendBtns() {
 
     }
 
+    curRequestID = null;
+
   });
 
   $('#sendAmount').on('keyup', () => {
@@ -163,6 +165,8 @@ function makeSendBtns() {
     } else {
       $('#sendAmount').addClass('is-valid').removeClass('is-invalid');
     }
+
+    curRequestID = null;
 
   });
 
@@ -178,6 +182,10 @@ function makeSendBtns() {
       if(amt <= 0 || amt > account.balance || !(/[\w]{10,}/.test(address)) || address == auth.uid) {
         swal("Oops", "Unable to complete transaction.", "error");
         return;
+      }
+
+      if(curRequestID) {
+        account.removeRequest(curRequestID);
       }
 
       account.sendMoney(address, amt, message, receiverName).then(() => {

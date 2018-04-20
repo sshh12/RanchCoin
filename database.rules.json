@@ -10,7 +10,10 @@
     "accounts": {
       "$uid": {
         ".read": "$uid === auth.uid",
-        ".write": false
+        ".write": false,
+        "requests": {
+          "write": true
+        }
       }
     },
     "transactions": {
