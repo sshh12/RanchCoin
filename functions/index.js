@@ -91,7 +91,7 @@ exports.handleTransaction = functions.database.ref('/transactions/{transID}').on
           } else {
 
             user = {
-              balance: 0,
+              balance: cert.val(),
               requests: {},
               transactions: {}
             }
